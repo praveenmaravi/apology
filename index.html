@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>I’m Sorry 💖</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      animation: backgroundShift 10s infinite alternate;
+      overflow: hidden;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    @keyframes backgroundShift {
+      0% { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
+      50% { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+      100% { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 0 20px 2rem;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 30px;
+      background-color: #ffffff;
+      color: #ff69b4;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #ffe6f2;
+    }
+
+    .heart {
+      font-size: 2rem;
+      margin-top: 1.5rem;
+      animation: pulse 1.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .flower-gift {
+      position: relative;
+      top: 20px;
+      margin-top: 30px;
+      opacity: 0;
+      animation: giftAnimation 3s ease-out forwards;
+    }
+
+    @keyframes giftAnimation {
+      0% { opacity: 0; transform: scale(0.5); }
+      50% { opacity: 1; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh);
+        opacity: 0;
+      }
+    }
+
+    #thankYou {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #thankYou img {
+      margin-top: 20px;
+      width: 300px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Main "I'm Sorry" Page -->
+  <div id="sorryPage">
+    <h1>I’m really sorry 😔</h1>
+    <p>I know I hurt you… but you're very special to me. Please forgive me.</p>
+    <button id="forgiveButton">💖 Tap to Forgive Me</button>
+    <div class="heart" id="heart" style="display:none;">❤️</div>
+    <div id="flower" class="flower-gift" style="display:none;">
+      <img src="https://i.postimg.cc/FFZ50GKg/images-1.jpg" alt="Flower Gift" width="150" />
+    </div>
+    <audio id="bgMusic" src="" style="display:none;"></audio> <!-- Disabled SoundCloud link for compatibility -->
+  </div>
+
+  <!-- Thank You Page -->
+  <div id="thankYou">
+    <h1>Thank You for Forgiving Me 💖</h1>
+    <p>Your forgiveness means the world to me, and I promise to cherish and love you always. 🌸</p>
+    <img src="https://i.postimg.cc/P5wcxMvj/Gopc-AT3-Xc-AIOPq.jpg" alt="Flower Gift" />
+  </div>
+
+  <script>
+    const forgiveButton = document.getElementById('forgiveButton');
+    const bgMusic = document.getElementById('bgMusic');
+    let musicPlayed = false;
+
+    forgiveButton.addEventListener('click', function() {
+      if (!musicPlayed) {
+        try {
+          bgMusic.play();
+        } catch (e) {
+          console.log("Music autoplay prevented by browser.");
+        }
+        musicPlayed = true;
+      }
+
+      document.querySelector("h1").textContent = "You mean the world to me 💕";
+      document.querySelector("p").innerHTML = `
+        I know I messed up...<br>
+        But losing you would break me even more.<br>
+        Thank you for forgiving me — your smile means everything to me. 🌸
+      `;
+
+      const heart = document.getElementById("heart");
+      heart.style.display = "block";
+      heart.innerHTML = "❤️❤️❤️";
+
+      const flower = document.getElementById("flower");
+      flower.style.display = "block";
+
+      for (let i = 0; i < 30; i++) {
+        const floatingHeart = document.createElement("div");
+        floatingHeart.textContent = "💖";
+        floatingHeart.style.position = "absolute";
+        floatingHeart.style.left = `${Math.random() * 100}%`;
+        floatingHeart.style.top = "100%";
+        floatingHeart.style.fontSize = `${Math.random() * 20 + 20}px`;
+        floatingHeart.style.animation = `floatUp ${4 + Math.random() * 3}s ease-out forwards`;
+        document.body.appendChild(floatingHeart);
+        setTimeout(() => floatingHeart.remove(), 7000);
+      }
+
+      setTimeout(() => {
+        document.getElementById("sorryPage").style.display = "none";
+        document.getElementById("thankYou").style.display = "flex";
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
