@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>I’m Sorry 💖</title>
   <style>
     * {
@@ -23,12 +23,6 @@
       color: #fff;
       animation: backgroundShift 10s infinite alternate;
       overflow: hidden;
-    }
-
-    img {
-      display: block;
-      max-width: 100%;
-      height: auto;
     }
 
     @keyframes backgroundShift {
@@ -84,11 +78,18 @@
     }
 
     .flower-gift {
-      position: relative;
-      top: 20px;
       margin-top: 30px;
+      display: none;
+      justify-content: center;
+      align-items: center;
       opacity: 0;
       animation: giftAnimation 3s ease-out forwards;
+    }
+
+    .flower-gift img {
+      width: 150px;
+      max-width: 80%;
+      border-radius: 10px;
     }
 
     @keyframes giftAnimation {
@@ -114,8 +115,25 @@
     #thankYou img {
       margin-top: 20px;
       width: 300px;
+      max-width: 90%;
       border-radius: 10px;
     }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -125,10 +143,10 @@
     <p>I know I hurt you… but you're very special to me. Please forgive me.</p>
     <button id="forgiveButton">💖 Tap to Forgive Me</button>
     <div class="heart" id="heart" style="display:none;">❤️</div>
-    <div id="flower" class="flower-gift" style="display:none;">
-      <img src="https://i.postimg.cc/FFZ50GKg/images-1.jpg" alt="Flower Gift" width="150" />
+    <div id="flower" class="flower-gift">
+      <img src="https://i.postimg.cc/FFZ50GKg/images-1.jpg" alt="Flower Gift" />
     </div>
-    <audio id="bgMusic" src="" style="display:none;"></audio> <!-- Disabled SoundCloud link for compatibility -->
+    <audio id="bgMusic" src="https://dl.dropboxusercontent.com/scl/fi/1dh8zpnv6woq7ff0rqh2b/dandelions-instrumental.mp3" type="audio/mpeg"></audio>
   </div>
 
   <!-- Thank You Page -->
@@ -141,48 +159,51 @@
   <script>
     const forgiveButton = document.getElementById('forgiveButton');
     const bgMusic = document.getElementById('bgMusic');
+    const heart = document.getElementById("heart");
+    const flower = document.getElementById("flower");
+    const sorryPage = document.getElementById("sorryPage");
+    const thankYou = document.getElementById("thankYou");
+
+    let stage = 0; // 0 = first tap, 1 = second tap
     let musicPlayed = false;
 
-    forgiveButton.addEventListener('click', function() {
-      if (!musicPlayed) {
-        try {
-          bgMusic.play();
-        } catch (e) {
-          console.log("Music autoplay prevented by browser.");
+    forgiveButton.addEventListener('click', function () {
+      if (stage === 0) {
+        // First tap
+        if (!musicPlayed) {
+          bgMusic.play().catch(err => console.log("Autoplay blocked"));
+          musicPlayed = true;
         }
-        musicPlayed = true;
+
+        document.querySelector("#sorryPage h1").textContent = "You mean the world to me 💕";
+        document.querySelector("#sorryPage p").innerHTML = `
+          I know I messed up...<br>
+          But losing you would break me even more.<br>
+          Thank you for forgiving me — your smile means everything to me. 🌸
+        `;
+        heart.style.display = "block";
+        flower.style.display = "flex";
+        forgiveButton.textContent = "💖 Tap Again";
+
+        // Floating hearts
+        for (let i = 0; i < 30; i++) {
+          const floatingHeart = document.createElement("div");
+          floatingHeart.textContent = "💖";
+          floatingHeart.style.position = "absolute";
+          floatingHeart.style.left = `${Math.random() * 100}%`;
+          floatingHeart.style.top = "100%";
+          floatingHeart.style.fontSize = `${Math.random() * 20 + 20}px`;
+          floatingHeart.style.animation = `floatUp ${4 + Math.random() * 3}s ease-out forwards`;
+          document.body.appendChild(floatingHeart);
+          setTimeout(() => floatingHeart.remove(), 7000);
+        }
+
+        stage = 1;
+      } else {
+        // Second tap
+        sorryPage.style.display = "none";
+        thankYou.style.display = "flex";
       }
-
-      document.querySelector("h1").textContent = "You mean the world to me 💕";
-      document.querySelector("p").innerHTML = `
-        I know I messed up...<br>
-        But losing you would break me even more.<br>
-        Thank you for forgiving me — your smile means everything to me. 🌸
-      `;
-
-      const heart = document.getElementById("heart");
-      heart.style.display = "block";
-      heart.innerHTML = "❤️❤️❤️";
-
-      const flower = document.getElementById("flower");
-      flower.style.display = "block";
-
-      for (let i = 0; i < 30; i++) {
-        const floatingHeart = document.createElement("div");
-        floatingHeart.textContent = "💖";
-        floatingHeart.style.position = "absolute";
-        floatingHeart.style.left = `${Math.random() * 100}%`;
-        floatingHeart.style.top = "100%";
-        floatingHeart.style.fontSize = `${Math.random() * 20 + 20}px`;
-        floatingHeart.style.animation = `floatUp ${4 + Math.random() * 3}s ease-out forwards`;
-        document.body.appendChild(floatingHeart);
-        setTimeout(() => floatingHeart.remove(), 7000);
-      }
-
-      setTimeout(() => {
-        document.getElementById("sorryPage").style.display = "none";
-        document.getElementById("thankYou").style.display = "flex";
-      }, 5000);
     });
   </script>
 </body>
